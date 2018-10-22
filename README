@@ -1,0 +1,10 @@
+
+sudo apt install libssl-dev
+
+python2
+pip install docopt
+pip install erc20token
+
+python3
+pip3 install docopt
+pip3 install erc20token
