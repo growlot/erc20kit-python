@@ -14,7 +14,7 @@ Options:
 from time import sleep
 import decimal
 import json
-import erc20token
+import erc20tokensdk
 from docopt import docopt
 
 from config import contract_abi, RPC_PROVIDER
@@ -34,7 +34,7 @@ def sendErc20(contract_address, from_privatekey, to_address, amount):
         to_address(str): The address to send tokens to.
         amount(Decimal): The amount of tokens to transfer.
     """
-    token_sdk = erc20token.SDK(provider_endpoint_uri=RPC_PROVIDER, 
+    token_sdk = erc20tokensdk.SDK(provider_endpoint_uri=RPC_PROVIDER, 
                        private_key=from_privatekey,
                        contract_address=contract_address, 
                        contract_abi=json.loads(contract_abi))
@@ -50,18 +50,18 @@ def sendErc20(contract_address, from_privatekey, to_address, amount):
     
     # In a short while, the transaction enters the pending queue
     for wait in range(0, 5000):
-        if (tx_id in tx_statuses) and (tx_statuses[tx_id] > erc20token.TransactionStatus.UNKNOWN):
+        if (tx_id in tx_statuses) and (tx_statuses[tx_id] > erc20tokensdk.TransactionStatus.UNKNOWN):
             break
         sleep(0.003)
-    assert (tx_id in tx_statuses) and (tx_statuses[tx_id] >= erc20token.TransactionStatus.PENDING)
+    assert (tx_id in tx_statuses) and (tx_statuses[tx_id] >= erc20tokensdk.TransactionStatus.PENDING)
     print(f"\tPending transation...")
 
     # Wait until transaction is confirmed
     for wait in range(0, 90):
-        if (tx_id in tx_statuses) and (tx_statuses[tx_id] > erc20token.TransactionStatus.PENDING):
+        if (tx_id in tx_statuses) and (tx_statuses[tx_id] > erc20tokensdk.TransactionStatus.PENDING):
             break
         sleep(1)
-    assert (tx_id in tx_statuses) and (tx_statuses[tx_id] == erc20token.TransactionStatus.SUCCESS)
+    assert (tx_id in tx_statuses) and (tx_statuses[tx_id] == erc20tokensdk.TransactionStatus.SUCCESS)
     print(f"\tSent {amount} tokens")
 
     print(f"Balance: {token_sdk.get_token_balance()}")

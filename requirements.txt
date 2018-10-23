@@ -1,2 +1,2 @@
 docopt
-erc20token
+erc20tokensdk

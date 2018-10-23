@@ -15,7 +15,7 @@ import sys
 from time import sleep
 import decimal
 import json
-import erc20token
+import erc20tokensdk
 from docopt import docopt
 
 from config import contract_abi, RPC_PROVIDER
@@ -34,7 +34,7 @@ def recvErc20(contract_address, to_address):
         contract_address(str): The address for ERC20 token.
         to_address(str): The address to be sent tokens to.
     """
-    token_sdk = erc20token.SDK(provider_endpoint_uri=RPC_PROVIDER, 
+    token_sdk = erc20tokensdk.SDK(provider_endpoint_uri=RPC_PROVIDER, 
                        contract_address=contract_address, 
                        contract_abi=json.loads(contract_abi))
 
@@ -46,11 +46,11 @@ def recvErc20(contract_address, to_address):
     while True:
         for tx_id in tx_statuses:
             tx_status = tx_statuses[tx_id]
-            if tx_status == erc20token.TransactionStatus.PENDING:
+            if tx_status == erc20tokensdk.TransactionStatus.PENDING:
                 if not(tx_id in accepted_tx_statuses):
-                    accepted_tx_statuses[tx_id] = erc20token.TransactionStatus.PENDING
+                    accepted_tx_statuses[tx_id] = erc20tokensdk.TransactionStatus.PENDING
                     print(f"Pending transation {tx_id}...")
-            if tx_status == erc20token.TransactionStatus.SUCCESS:
+            if tx_status == erc20tokensdk.TransactionStatus.SUCCESS:
                 tx_data = token_sdk.get_transaction_data(tx_id)
                 print(f"Received {tx_data.token_amount} tokens from {tx_data.from_address} - balance: {token_sdk.get_address_token_balance(to_address)}")
                 tx_statuses.pop(tx_id, None)
