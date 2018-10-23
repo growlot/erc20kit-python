@@ -38,7 +38,7 @@ def recvErc20(contract_address, to_address):
                        contract_address=contract_address, 
                        contract_abi=json.loads(contract_abi))
 
-    # Monitor token transactions from me 
+    # Monitor token transactions to me 
     token_sdk.monitor_token_transactions(txCallback, to_address=to_address)
 
     print(f"Waiting for receiving tokens - balance: {token_sdk.get_address_token_balance(to_address)}")
