@@ -15,6 +15,14 @@ pip3 install -r requirements.txt
 
 ## Usage
 
+### Config
+
+Set your geth rpc endpoint in config.py file:
+
+```
+RPC_PROVIDER = 'http://localhost:8545'
+```
+
 ### Send
 
 ```
